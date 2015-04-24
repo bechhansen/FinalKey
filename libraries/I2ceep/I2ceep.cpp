@@ -33,6 +33,8 @@
 
 #define EEP_I2C_ADDR 80 //This is 160 >> 1, we have 1010 and then 000 as cs.
 
+#define PAGE_MAX_LENGT 30
+
 
 uint16_t I2ceep::dataOp(uint16_t eeaddress, byte* data, uint8_t len, uint8_t write)
 {
@@ -41,7 +43,7 @@ uint16_t I2ceep::dataOp(uint16_t eeaddress, byte* data, uint8_t len, uint8_t wri
   while(len)
   {
     uint8_t lenForPage;
-    lenForPage = (len > 31)?32:len;
+    lenForPage = (len >= PAGE_MAX_LENGT) ? PAGE_MAX_LENGT : len;
     
     uint8_t currentPageOffset = eeaddress%128;
     uint8_t nextPageOffset = (eeaddress+lenForPage)%128;
